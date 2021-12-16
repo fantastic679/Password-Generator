@@ -41,7 +41,7 @@ verifyCharacters();
 const lowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
 const upperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const numericCharacters = "1234567890";
-const specialCharacters = " !\"#$%&'()*+,-./:;<=>?@[\]`{|}~";
+const specialCharacters = " !\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~";
 var passwordCharacters = "";
 var generatedPassword = "";
 if (window.includeLowerCase == true) {
@@ -75,8 +75,8 @@ function verifyLength() {
                                  // [0-9]= numeric characters 0-9
                                  // + = at least one character
                                  // $ = end of string
-  var userInput = prompt("Please enter numeric value for the password length",
-                         "Only lengths between 8 and 128 inclusive accepted.");
+  var userInput = prompt("Please enter numeric value for the password length:",
+                         "Only lengths between 8 and 128 inclusive will be accepted.");
   if (userInput >= 8 && userInput <= 128) {
     if (userInput.match(numericOnly) != null) {
       window.passwordLength = userInput;
