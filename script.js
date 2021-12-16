@@ -22,9 +22,10 @@ function writePassword() {
 
 // Generate password
 function generatePassword() {
+window.passwordLength;
 verifyLength();
 verifyCharacters();
-return "PLACEHOLDER PASSWORD";
+return("PLACEHOLDER PASSWORD length: " + window.passwordLength);
 }
 
 // accepts numeric password lengths between 8 and 128 inclusive
@@ -35,51 +36,70 @@ function verifyLength() {
                                  // [0-9]= numeric characters 0-9
                                  // + = at least one character
                                  // $ = end of string
-  var passwordLength = prompt("Please enter numeric value for the password length", "Only lengths between 8 and 128 inclusive accepted.");
-  if (passwordLength.match(numericOnly) != null && passwordLength >= 8 && passwordLength <= 128) {
-    alert("GOOD PASSWORD LENGTH");
+  var userInput = prompt("Please enter numeric value for the password length",
+                         "Only lengths between 8 and 128 inclusive accepted.");
+  if (userInput >= 8 && userInput <= 128) {
+    if (userInput.match(numericOnly) != null) {
+      window.passwordLength = userInput;
+    }
   } else {
     alert("Only lengths between 8 and 128 inclusive accepted.");
     verifyLength();
-    return;
+    stop;
   }
 }
 
 // prompts users to choose if they want lowercase, uppercase, numeric, and/or special charcters
-// if nothing chosen,  alerts user and makes them choose again
+// if nothing chosen, alerts user and makes them choose again
 function verifyCharacters() {
+  // include lower case?
   var includeLowerCase;
-  if (window.confirm("Press OK to include at least one lower case character: abc...")) {
+  if (window.confirm("Length: " + window.passwordLength + "\n" + 
+                     "Press OK to include at least one lower case character: abc...")) {
     includeLowerCase = true;
   } else {
     includeLowerCase = false;
   }
-
+  // include upper case?
   var includeUpperCase;
-  if (window.confirm("Press OK to include at least one upper case character: ABC...")) {
+  if (window.confirm("Length: " + window.passwordLength + "\n" + 
+                     "Lower case included: " + includeLowerCase + "\n" + 
+                     "Press OK to include at least one upper case character: ABC...")) {
     includeUpperCase = true;
   } else {
     includeUpperCase = false;
   }
-
+  // include numeric characters?
   var includeNumeric;
-  if (window.confirm("Press OK to include at least one numeric character: 123...")) {
+  if (window.confirm("Length: " + window.passwordLength + "\n" + 
+                     "Lower case included: " + includeLowerCase + "\n" + 
+                     "Upper case included: " + includeUpperCase + "\n" + 
+                     "Press OK to include at least one numeric character: 123...")) {
     includeNumeric = true;
   } else {
     includeNumeric = false;
   }
-
+  // include special characters?
   var includeSpecial;
-  if (window.confirm("Press OK to include at least one special character: !@#...")) {
+  if (window.confirm("Length: " + window.passwordLength + "\n" + 
+                     "Lower case included: " + includeLowerCase + "\n" + 
+                     "Upper case included: " + includeUpperCase + "\n" +
+                     "Numeric characters included: " + includeNumeric + "\n" + 
+                     "Press OK to include at least one special character: !@#...")) {
     includeSpecial = true;
   } else {
     includeSpecial = false;
   }
-
+  // makes them choose again if they declined everthing
   if (includeLowerCase === false && includeUpperCase === false && includeNumeric === false && includeSpecial === false) {
     alert("Please select at least one type of character.");
     verifyCharacters();
-    return;
+  } else {
+    alert("Length: " + window.passwordLength + "\n" + 
+          "Lower case included: " + includeLowerCase + "\n" + 
+          "Upper case included: " + includeUpperCase + "\n" +
+          "Numeric characters included: " + includeNumeric + "\n" +
+          "Special characters included: " + includeSpecial + "\n")
   }
 }
 
