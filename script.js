@@ -1,15 +1,15 @@
+////////////////////////////////////////////////////////////////////////////
+//                                                                        //
+//                          High level functions                          //
+//                                                                        //
+////////////////////////////////////////////////////////////////////////////
+
 // Trigger password generation on clicking button
 var generateBtn = document.querySelector("#generate");
 generateBtn.addEventListener("click", writePassword);
 
 // Write password to the #password input
 function writePassword() {
-
-  // Prompt for password criteria
-  // WHEN I click the button to generate a password
-  // THEN I am presented with a series of prompts for password criteria
-  // WHEN prompted for password criteria
-  // THEN I select which criteria to include in the password
 
   // Generate password
   var password = generatePassword();
@@ -20,16 +20,55 @@ function writePassword() {
 
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//                                                                         //
+//                           Low level functions                           //
+//                                                                         //
+/////////////////////////////////////////////////////////////////////////////
+
 // Generate password
+// Based on user input, will determine pool of characters password will be formulated from
+// Uses a for loop to randomly select each individual character from this pool
 function generatePassword() {
 window.passwordLength;
+window.includeLowerCase;
+window.includeUpperCase;
+window.includeNumeric;
+window.includeSpecial;
 verifyLength();
 verifyCharacters();
-return("PLACEHOLDER PASSWORD length: " + window.passwordLength);
+
+const lowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
+const upperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numericCharacters = "1234567890";
+const specialCharacters = " !\"#$%&'()*+,-./:;<=>?@[\]`{|}~";
+var passwordCharacters = "";
+var generatedPassword = "";
+if (window.includeLowerCase == true) {
+  passwordCharacters = lowerCaseCharacters;
+}
+if (window.includeUpperCase == true) {
+  passwordCharacters += upperCaseCharacters;
+}
+if (window.includeNumeric == true) {
+  passwordCharacters += numericCharacters;
+}
+if (window.includeSpecial == true) {
+  passwordCharacters += specialCharacters;
+}
+for (var i = 0; i < window.passwordLength; i++) {
+  var index = Math.floor(Math.random() * passwordCharacters.length);
+  generatedPassword += passwordCharacters.substring(index, index+1);
 }
 
-// accepts numeric password lengths between 8 and 128 inclusive
-// if doesn't meet these conditions, alerts user and makes them re-enter
+return(generatedPassword);
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+// Verify length
+// Accepts numeric password lengths between 8 and 128 inclusive
+// If doesn't meet these conditions, alerts user and makes them re-enter
 function verifyLength() {
   var numericOnly  = /^[0-9]+$/; // use Regular Expressions to ensure 0-9 characters only
                                  // ^ = start of string
@@ -41,6 +80,7 @@ function verifyLength() {
   if (userInput >= 8 && userInput <= 128) {
     if (userInput.match(numericOnly) != null) {
       window.passwordLength = userInput;
+      console.log("Length: " + window.passwordLength) ////////////////////
     }
   } else {
     alert("Only lengths between 8 and 128 inclusive accepted.");
@@ -49,57 +89,67 @@ function verifyLength() {
   }
 }
 
-// prompts users to choose if they want lowercase, uppercase, numeric, and/or special charcters
-// if nothing chosen, alerts user and makes them choose again
+///////////////////////////////////////////////////////////////////////////
+
+// Verify characters
+// Prompts users to choose if they want lowercase, uppercase, numeric, and/or special charcters
+// If nothing chosen, alerts user and makes them choose again
 function verifyCharacters() {
+
   // include lower case?
-  var includeLowerCase;
   if (window.confirm("Length: " + window.passwordLength + "\n" + 
                      "Press OK to include at least one lower case character: abc...")) {
-    includeLowerCase = true;
+    window.includeLowerCase = true;
   } else {
-    includeLowerCase = false;
+    window.includeLowerCase = false;
   }
+  console.log("Lower case included: " + window.includeLowerCase); ////////////////////
+
   // include upper case?
-  var includeUpperCase;
   if (window.confirm("Length: " + window.passwordLength + "\n" + 
-                     "Lower case included: " + includeLowerCase + "\n" + 
+                     "Lower case included: " + window.includeLowerCase + "\n" + 
                      "Press OK to include at least one upper case character: ABC...")) {
-    includeUpperCase = true;
+    window.includeUpperCase = true;
   } else {
-    includeUpperCase = false;
+    window.includeUpperCase = false;
   }
-  // include numeric characters?
-  var includeNumeric;
+  console.log("Upper case included: " + window.includeUpperCase); ////////////////////
+
+  // Include numeric characters?
   if (window.confirm("Length: " + window.passwordLength + "\n" + 
-                     "Lower case included: " + includeLowerCase + "\n" + 
-                     "Upper case included: " + includeUpperCase + "\n" + 
+                     "Lower case included: " + window.includeLowerCase + "\n" + 
+                     "Upper case included: " + window.includeUpperCase + "\n" + 
                      "Press OK to include at least one numeric character: 123...")) {
-    includeNumeric = true;
+    window.includeNumeric = true;
   } else {
-    includeNumeric = false;
+    window.includeNumeric = false;
   }
-  // include special characters?
-  var includeSpecial;
+  console.log("Numeric characters included: " + window.includeNumeric); ////////////////////
+
+  // Include special characters?
   if (window.confirm("Length: " + window.passwordLength + "\n" + 
-                     "Lower case included: " + includeLowerCase + "\n" + 
-                     "Upper case included: " + includeUpperCase + "\n" +
-                     "Numeric characters included: " + includeNumeric + "\n" + 
+                     "Lower case included: " + window.includeLowerCase + "\n" + 
+                     "Upper case included: " + window.includeUpperCase + "\n" +
+                     "Numeric characters included: " + window.includeNumeric + "\n" + 
                      "Press OK to include at least one special character: !@#...")) {
-    includeSpecial = true;
+    window.includeSpecial = true;
   } else {
-    includeSpecial = false;
+    window.includeSpecial = false;
   }
-  // makes them choose again if they declined everthing
-  if (includeLowerCase === false && includeUpperCase === false && includeNumeric === false && includeSpecial === false) {
+  console.log("Special characters included: " + window.includeSpecial); ////////////////////
+
+  // Makes them choose again if they declined everthing
+  if (window.includeLowerCase === false && window.includeUpperCase === false && window.includeNumeric === false && window.includeSpecial === false) {
     alert("Please select at least one type of character.");
     verifyCharacters();
   } else {
     alert("Length: " + window.passwordLength + "\n" + 
-          "Lower case included: " + includeLowerCase + "\n" + 
-          "Upper case included: " + includeUpperCase + "\n" +
-          "Numeric characters included: " + includeNumeric + "\n" +
-          "Special characters included: " + includeSpecial + "\n")
+          "Lower case included: " + window.includeLowerCase + "\n" + 
+          "Upper case included: " + window.includeUpperCase + "\n" +
+          "Numeric characters included: " + window.includeNumeric + "\n" +
+          "Special characters included: " + window.includeSpecial + "\n")
   }
+
 }
 
+///////////////////////////////////////////////////////////////////////////
